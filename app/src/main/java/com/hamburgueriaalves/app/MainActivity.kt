@@ -1,16 +1,16 @@
 package com.hamburgueriaalves.app
 
+import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.activity.ComponentActivity
 
-class MainActivity : ComponentActivity() {
+class MainActivity : Activity() {
     private lateinit var web: WebView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         web = WebView(this)
@@ -22,12 +22,16 @@ class MainActivity : ComponentActivity() {
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                 val u = request?.url ?: return false
                 return if (u.scheme == "https" && (u.host == "wa.me" || u.host?.contains("whatsapp") == true)) {
-                    startActivity(Intent(Intent.ACTION_VIEW, u)); true
+                    startActivity(Intent(Intent.ACTION_VIEW, u))
+                    true
                 } else false
             }
         }
         web.loadUrl("file:///android_asset/index.html")
     }
+
     @Deprecated("Deprecated in Java")
-    override fun onBackPressed() { if (web.canGoBack()) web.goBack() else super.onBackPressed() }
+    override fun onBackPressed() {
+        if (web.canGoBack()) web.goBack() else super.onBackPressed()
+    }
 }
